@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import TodoItem from '@/components/TodoItem'
+import AddTodoModal from '@/components/AddTodoModal'
 
 interface Todo {
   id: number
@@ -12,6 +13,7 @@ interface Todo {
 export default function MainPage() {
   const [todos, setTodos] = useState<Todo[]>([])
   const [input, setInput] = useState('')
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const addTodo = () => {
     if (input.trim() === '') return
@@ -22,6 +24,7 @@ export default function MainPage() {
     }
     setTodos([...todos, newTodo])
     setInput('')
+    setIsModalOpen(false)
   }
 
   const toggleComplete = (id: number) => {
@@ -35,27 +38,10 @@ export default function MainPage() {
   }
 
   return (
-    <main className="min-h-screen bg-sky-100 text-foreground p-6">
-      <h1 className="text-3xl font-bold mb-6 text-center">📝 My Todo List</h1>
+    <main className="min-h-screen bg-sky-100 text-foreground p-6 relative">
+      <h1 className="text-3xl font-bold mb-6 text-center">나으 투두 리스또</h1>
 
-      <div className="flex gap-2 mb-4">
-        <input
-          type="text"
-          className="flex-1 p-2 border rounded bg-white text-black"
-          placeholder="할 일을 입력하세요"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && addTodo()}
-        />
-        <button
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-          onClick={addTodo}
-        >
-          추가
-        </button>
-      </div>
-
-      <ul className="space-y-2">
+      <ul className="space-y-2 mb-20">
         {todos.map((todo) => (
           <TodoItem
             key={todo.id}
@@ -65,6 +51,22 @@ export default function MainPage() {
           />
         ))}
       </ul>
+
+      <button
+        className="fixed bottom-6 right-6 bg-blue-600 text-white w-14 h-14 rounded-full text-3xl shadow-lg hover:bg-blue-700"
+        onClick={() => setIsModalOpen(true)}
+      >
+        +
+      </button>
+
+      {isModalOpen && (
+        <AddTodoModal
+          input={input}
+          setInput={setInput}
+          onAdd={addTodo}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
     </main>
   )
 }
