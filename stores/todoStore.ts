@@ -5,7 +5,7 @@ export interface Todo {
   id: number
   text: string
   completed: boolean
-  createdAt: number // ← 날짜 정렬용
+  createdAt: number
 }
 
 type FilterType = 'all' | 'completed' | 'active'

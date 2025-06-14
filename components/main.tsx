@@ -20,7 +20,6 @@ export default function MainPage() {
   const [input, setInput] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  // ✅ 필터링된 투두는 useMemo로 처리
   const filteredTodos = useMemo(() => {
     let result = [...todos]
     if (filter === 'completed') result = result.filter((t) => t.completed)
