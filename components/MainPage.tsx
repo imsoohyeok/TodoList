@@ -2,8 +2,11 @@
 
 import { useMemo, useState } from 'react'
 import { useTodoStore } from '@/stores/todoStore'
-import TodoItem from '@/components/TodoItem'
-import AddTodoModal from '@/components/AddTodoModal'
+import { useCalendarStore } from '@/stores/calendarStore'
+import { formatDateToLocalString } from '@/utils/date'
+import TodoItem from './TodoItem'
+import AddTodoModal from './AddTodoModal'
+import CalendarFilter from './CalendarFilter'
 import { AnimatePresence } from 'framer-motion'
 
 export default function MainPage() {
@@ -19,17 +22,26 @@ export default function MainPage() {
 
   const [input, setInput] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const selectedDate = useCalendarStore((state) => state.selectedDate)
 
   const filteredTodos = useMemo(() => {
     let result = [...todos]
+
     if (filter === 'completed') result = result.filter((t) => t.completed)
     if (filter === 'active') result = result.filter((t) => !t.completed)
+
+    if (selectedDate) {
+      result = result.filter((t) => {
+        const createdAtDate = formatDateToLocalString(new Date(t.createdAt))
+        return createdAtDate === selectedDate
+      })
+    }
 
     if (sort === 'latest') result.sort((a, b) => b.createdAt - a.createdAt)
     else result.sort((a, b) => a.createdAt - b.createdAt)
 
     return result
-  }, [todos, filter, sort])
+  }, [todos, filter, sort, selectedDate])
 
   const handleAdd = () => {
     if (input.trim() === '') return
@@ -66,6 +78,8 @@ export default function MainPage() {
           <option value="oldest">오래된순</option>
         </select>
       </div>
+
+      <CalendarFilter />
 
       <ul className="space-y-2 mb-20 max-w-3xl mx-auto">
         {filteredTodos.map((todo) => (
