@@ -14,7 +14,7 @@ interface Props {
 
 export default function TodoItem({ todo, onToggle, onDelete }: Props) {
   return (
-    <li className="flex items-center justify-between p-3 border rounded bg-white">
+    <li className="w-full flex items-center justify-between p-3 border rounded bg-white">
       <div className="flex items-center gap-2">
         <input
           type="checkbox"

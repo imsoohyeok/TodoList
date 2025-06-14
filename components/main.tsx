@@ -67,7 +67,7 @@ export default function MainPage() {
         </select>
       </div>
 
-      <ul className="space-y-2 mb-20">
+      <ul className="space-y-2 mb-20 max-w-3xl mx-auto">
         {filteredTodos.map((todo) => (
           <TodoItem
             key={todo.id}
