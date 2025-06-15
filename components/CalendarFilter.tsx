@@ -22,6 +22,7 @@ export default function CalendarFilter() {
   return (
     <div className="flex justify-center mb-6">
       <Calendar
+        className="calendar-custom"
         onChange={handleChange}
         value={selectedDate ? new Date(selectedDate) : new Date()}
         selectRange={false}
@@ -31,17 +32,17 @@ export default function CalendarFilter() {
             isSameDay(new Date(todo.createdAt), date)
           )
           return (
-            <div className="mt-1 space-y-[2px] px-1">
+            <div className="mt-1 space-y-1 px-1">
               {dayTodos.slice(0, 2).map((todo) => (
                 <p
                   key={todo.id}
-                  className="text-[10px] truncate rounded bg-blue-100 text-blue-700 px-1"
+                  className="text-3 truncate bg-blue-100 text-blue-700 px-1 rounded max-w-20"
                 >
-                  {todo.text}
+                  {todo.text.length > 5 ? `${todo.text.slice(0, 5)}...` : todo.text}
                 </p>
               ))}
               {dayTodos.length > 2 && (
-                <p className="text-[10px] text-gray-500">+{dayTodos.length - 2}개</p>
+                <p className="text-3 text-gray-500">+{dayTodos.length - 2}개</p>
               )}
             </div>
           )
